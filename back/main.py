@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from middlewares.middleware import setupMiddlewares
 
+from routes.default import router as defaultRouter
 from routes.corteiz import router as corteizRouter
 from routes.nike import router as nikeRouter
 from routes.adidas import router as adidasRouter
@@ -10,6 +11,7 @@ app = FastAPI()
 
 setupMiddlewares(app)
 
+app.include_router(defaultRouter)
 app.include_router(corteizRouter)
 app.include_router(nikeRouter)
 app.include_router(adidasRouter)
