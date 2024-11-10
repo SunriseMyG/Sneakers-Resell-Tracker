@@ -6,6 +6,7 @@ from routes.nike import router as nikeRouter
 from routes.adidas import router as adidasRouter
 from routes.nocta import router as noctaRouter
 from monitors.snkrs import monitor_snkrs
+from monitors.shopify import monitor_shopify
 import threading
 
 app = FastAPI()
@@ -19,8 +20,10 @@ app.include_router(adidasRouter)
 app.include_router(noctaRouter)
 
 def start_monitoring():
-    monitoring_thread = threading.Thread(target=monitor_snkrs, daemon=True)
-    monitoring_thread.start()
+    # snkrs_thread = threading.Thread(target=monitor_snkrs, daemon=True)
+    # snkrs_thread.start()
+    corteiz_thread = threading.Thread(target=monitor_shopify, args=('https://www.crtz.xyz/products.json',), daemon=True)
+    corteiz_thread.start()
 
 @app.on_event("startup")
 def startup_event():
