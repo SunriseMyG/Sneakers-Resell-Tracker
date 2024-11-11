@@ -23,8 +23,12 @@ def monitor_snkrs():
         'User-Agent': random_user_agent()
     })
 
+    data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+    os.makedirs(data_dir, exist_ok=True)
+    logs_file = os.path.join(data_dir, 'snkrs.json')
+
     try:
-        with open('logsSNKRS.json', 'r') as file:
+        with open(logs_file, 'r') as file:
             logs = json.load(file)
             print('Logs loaded from file:', logs)
     except (FileNotFoundError, json.JSONDecodeError):
@@ -96,7 +100,7 @@ def monitor_snkrs():
                                             sku = content[1]['content'][1].get('text', 'Unknown')
                 
                         logs.append(product_id)
-                        with open('logsSNKRS.json', 'w') as file:
+                        with open(logs_file, 'w') as file:
                             json.dump(logs, file, indent=2)
                 
                         print(f"New product found: {full_title} - {color_description} - {price} - {product_url} - {img} - {desc} - {sku}")

@@ -8,6 +8,7 @@ from routes.nocta import router as noctaRouter
 from monitors.snkrs import monitor_snkrs
 from monitors.shopify import monitor_shopify
 import threading
+import os
 
 app = FastAPI()
 
@@ -20,6 +21,9 @@ app.include_router(adidasRouter)
 app.include_router(noctaRouter)
 
 def start_monitoring():
+    if not os.path.exists('data'):
+        os.makedirs('data')
+
     snkrs_thread = threading.Thread(target=monitor_snkrs, daemon=True)
     snkrs_thread.start()
     
@@ -29,9 +33,9 @@ def start_monitoring():
     nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json',), daemon=True)
     nocta_thread.start()
 
-    snkrs_thread.join()
+    # snkrs_thread.join()
     corteiz_thread.join()
-    nocta_thread.join()
+    # nocta_thread.join()
 
 @app.on_event("startup")
 def startup_event():
