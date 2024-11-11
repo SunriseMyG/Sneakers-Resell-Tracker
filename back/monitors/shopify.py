@@ -14,7 +14,7 @@ def monitor_shopify(url):
         print("URL invalide, veuillez entrer une URL valide se terminant par products.json\n Exemple: https://www.crtz.xyz/products.json")
         return
 
-    logs_file = url.split('https://')[1].split('.')[0] + '.json'
+    logs_file = url.split('https://')[1].split('.')[1] + '.json'
     site_base_url = url.split('products.json')[0]
 
     try:
