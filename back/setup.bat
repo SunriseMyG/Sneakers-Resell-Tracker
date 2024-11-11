@@ -19,7 +19,7 @@ call venv\Scripts\activate.bat
 
 REM Installer FastAPI et Uvicorn
 echo Installation de FastAPI et Uvicorn...
-pip install fastapi uvicorn requests
+pip install fastapi uvicorn requests mysql-connector-python
 
 REM Lancer Uvicorn
 echo Démarrage du serveur Uvicorn...
