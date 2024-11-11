@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from sql.setup import setupDatabase
+from sql.connection import connectDatabase, disconnectDatabase
 from middlewares.middleware import setupMiddlewares
 from routes.default import router as defaultRouter
 from routes.corteiz import router as corteizRouter
@@ -11,6 +13,9 @@ import threading
 import os
 
 app = FastAPI()
+
+cnx, cursor = connectDatabase()
+setupDatabase(cnx, cursor)
 
 setupMiddlewares(app)
 
@@ -33,9 +38,9 @@ def start_monitoring():
     nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json',), daemon=True)
     nocta_thread.start()
 
-    # snkrs_thread.join()
+    snkrs_thread.join()
     corteiz_thread.join()
-    # nocta_thread.join()
+    nocta_thread.join()
 
 @app.on_event("startup")
 def startup_event():
