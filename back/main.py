@@ -29,13 +29,13 @@ def start_monitoring():
     if not os.path.exists('data'):
         os.makedirs('data')
 
-    snkrs_thread = threading.Thread(target=monitor_snkrs, daemon=True)
+    snkrs_thread = threading.Thread(target=monitor_snkrs, args=(cnx, cursor), daemon=True)
     snkrs_thread.start()
     
-    corteiz_thread = threading.Thread(target=monitor_shopify, args=('https://www.crtz.xyz/products.json',), daemon=True)
+    corteiz_thread = threading.Thread(target=monitor_shopify, args=('https://www.crtz.xyz/products.json', cnx, cursor), daemon=True)
     corteiz_thread.start()
 
-    nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json',), daemon=True)
+    nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json', cnx, cursor), daemon=True)
     nocta_thread.start()
 
     snkrs_thread.join()

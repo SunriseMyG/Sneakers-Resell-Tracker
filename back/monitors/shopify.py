@@ -3,10 +3,12 @@ import json
 import time
 import requests
 
+from sql.insert import insertItem
+
 def sleep(ms):
     time.sleep(ms / 1000)
 
-def monitor_shopify(url):
+def monitor_shopify(url, cnx, cursor):
     print("\n---------------------------------\n--- SHOPIFY MONITOR HAS STARTED ---\n---------------------------------\n")
     print('Monitoring:', url)
 
@@ -51,12 +53,16 @@ def monitor_shopify(url):
             if product["id"] in LOGS:
                 continue
 
-            print(f"New product found: {item['title']}")
+            #print(f"New product found: {item['title']}")
             LOGS.append(product["id"])
             with open(logs_file, 'w') as file:
                 json.dump(LOGS, file, indent=2)
 
-            print(item['title'], item['image'], item['handle'], item['variants'], item['description'])
+            #print(item['title'], item['image'], item['handle'], item['variants'], item['description'])
+
+            if (cnx and cursor):
+                insertItem(cnx, cursor, item['title'], item['variants'][0]['price'], site_base_url + 'products/' +  item['handle'], item['image'], item['description'], item['variants'][0]['sku'], item['variants'][0]['option2'])
+
             sleep(1000)
 
         print("Successfully scraped site")

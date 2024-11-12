@@ -7,6 +7,8 @@ import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from useragents import random_user_agent
 
+from sql.insert import insertItem
+
 snkrs = {
     "language": "fr",
     "location": "FR"
@@ -15,7 +17,7 @@ snkrs = {
 def sleep(ms):
     time.sleep(ms / 1000)
 
-def monitor_snkrs():
+def monitor_snkrs(cnx, cursor):
     print("\n---------------------------------\n--- NIKE MONITOR HAS STARTED ---\n---------------------------------\n")
 
     session = requests.Session()
@@ -63,7 +65,6 @@ def monitor_snkrs():
                 for obj in response_data['objects']:
                     
                     if 'productInfo' not in obj:
-                        print('No product info found in object.')
                         continue
                 
                     product_info = obj['productInfo']
@@ -92,18 +93,16 @@ def monitor_snkrs():
                                 if len(sub_nodes) > 0 and 'properties' in sub_nodes[0]:
                                     properties = sub_nodes[0]['properties']
                                     img = properties.get('squarishURL', 'Unknown')
-                                    if 'jsonBody' in properties and 'content' in properties['jsonBody']:
-                                        content = properties['jsonBody']['content']
-                                        if len(content) > 0 and 'content' in content[0]:
-                                            desc = content[0]['content'][0].get('text', 'Unknown')
-                                        if len(content) > 1 and 'content' in content[1]:
-                                            sku = content[1]['content'][1].get('text', 'Unknown')
                 
                         logs.append(product_id)
                         with open(logs_file, 'w') as file:
                             json.dump(logs, file, indent=2)
                 
-                        print(f"New product found: {full_title} - {color_description} - {price} - {product_url} - {img} - {desc} - {sku}")
+                        #print(f"New product found: {full_title} - {color_description} - {price} - {product_url} - {img} - {desc} - {sku}")
+                        print(f"New product found: {full_title} - {sku} - {desc}")
+                        if (cnx and cursor):
+                            insertItem(cnx, cursor, full_title, price, product_url, img, desc, sku, color_description)
+
                         sleep(2500)
 
                 anchor += count
