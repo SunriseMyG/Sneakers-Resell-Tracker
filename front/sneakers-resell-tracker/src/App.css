@@ -7,6 +7,10 @@ body,
   overflow: hidden;
 }
 
+/* body::-webkit-scrollbar {
+  display: none;
+} */
+
 /* #0079bf; */
 
 .App {
@@ -17,4 +21,8 @@ body,
   /* overflow-x: auto; */
   overflow-y: auto;
   background-color: #fff;
+}
+
+.App::-webkit-scrollbar {
+  display: none;
 }
