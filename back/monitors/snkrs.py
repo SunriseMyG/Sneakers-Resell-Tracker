@@ -85,21 +85,43 @@ def monitor_snkrs(cnx, cursor):
                         img = 'Unknown'
                         desc = 'Unknown'
                         sku = 'Unknown'
-                        
-                        if 'publishedContent' in obj and 'nodes' in obj['publishedContent']:
-                            nodes = obj['publishedContent']['nodes']
-                            if len(nodes) > 0 and 'nodes' in nodes[0]:
-                                sub_nodes = nodes[0]['nodes']
-                                if len(sub_nodes) > 0 and 'properties' in sub_nodes[0]:
-                                    properties = sub_nodes[0]['properties']
-                                    img = properties.get('squarishURL', 'Unknown')
+
+                        try:
+                            img = obj['publishedContent']['nodes'][0]['nodes'][0]['properties'].get('squarishURL', 'Unknown')
+                        except KeyError:
+                            img = "Unknown"
+
+                        try:
+                            content_list = obj['publishedContent']['nodes'][0]['properties']['jsonBody']['content'][0]['content']
+                            for content in content_list:
+                                text = content.get('text', 'Unknown')
+                                if len(text) > 30:
+                                    desc = text
+                                    break
+                            else:
+                                desc = "Unknown"
+                        except (IndexError, KeyError) as e:
+                            print(f"Error retrieving description: {e}")
+                            desc = "Unknown"
+
+                        try:
+                            content_list = obj['publishedContent']['nodes'][0]['properties']['jsonBody']['content'][0]['content']
+                            for content in content_list:
+                                text = content.get('text', 'Unknown')
+                                if "SKU : " in text:
+                                    sku = text.replace("SKU : ", "").strip()
+                                    break
+                            else:
+                                sku = "Unknown"
+                        except (IndexError, KeyError) as e:
+                            print(f"Error retrieving SKU: {e}")
+                            sku = "Unknown"
                 
                         logs.append(product_id)
                         with open(logs_file, 'w') as file:
                             json.dump(logs, file, indent=2)
                 
                         #print(f"New product found: {full_title} - {color_description} - {price} - {product_url} - {img} - {desc} - {sku}")
-                        print(f"New product found: {full_title} - {sku} - {desc}")
                         if (cnx and cursor):
                             insertItem(cnx, cursor, full_title, price, product_url, img, desc, sku, color_description)
 
