@@ -61,7 +61,15 @@ def monitor_shopify(url, cnx, cursor):
             #print(item['title'], item['image'], item['handle'], item['variants'], item['description'])
 
             if (cnx and cursor):
-                insertItem(cnx, cursor, item['title'], item['variants'][0]['price'], site_base_url + 'products/' +  item['handle'], item['image'], item['description'], item['variants'][0]['sku'], item['variants'][0]['option2'])
+                title = item['title']
+                price = item['variants'][0]['price']
+                url = site_base_url + 'products/' +  item['handle']
+                image = item['image']
+                description = item['description']
+                sku = item['variants'][0]['sku'] 
+                color = "N/A"
+
+                insertItem(cnx, cursor, title, price, url, image, description, sku, color)
 
             sleep(1000)
 
