@@ -1,4 +1,5 @@
 import mysql.connector
+from time import sleep
 
 def connectDatabase():
     config = {
@@ -13,6 +14,7 @@ def connectDatabase():
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
         print("Connected to MySQL server.")
+        sleep(2)
         return cnx, cursor
     except mysql.connector.Error as err:
         print(f"Error: {err}")
