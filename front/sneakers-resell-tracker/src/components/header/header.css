@@ -99,3 +99,7 @@
 .header-searchbar input:focus {
     outline: none;
 }
+
+@media (max-width: 1200px) {
+
+}
