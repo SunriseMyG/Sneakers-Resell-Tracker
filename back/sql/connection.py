@@ -1,18 +1,20 @@
 import mysql.connector
+from time import sleep
 
 def connectDatabase():
     config = {
         'user': 'root',
         'password': '',
         'host': '127.0.0.1',
-        connection_timeout=300,
-        autocommit=True
+        'connection_timeout':300,
+        'autocommit':True
     }
 
     try:
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
         print("Connected to MySQL server.")
+        sleep(2)
         return cnx, cursor
     except mysql.connector.Error as err:
         print(f"Error: {err}")
