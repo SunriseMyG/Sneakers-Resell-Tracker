@@ -5,8 +5,8 @@ def connectDatabase():
         'user': 'root',
         'password': '',
         'host': '127.0.0.1',
-        connection_timeout=300,
-        autocommit=True
+        'connection_timeout':300,
+        'autocommit':True
     }
 
     try:
