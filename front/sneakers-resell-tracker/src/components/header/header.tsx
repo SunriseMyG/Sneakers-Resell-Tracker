@@ -6,11 +6,13 @@ import { useState } from "react";
 interface HeaderProps {
     setPageIndex: React.Dispatch<React.SetStateAction<number>>;
     setSearchItem: React.Dispatch<React.SetStateAction<string>>;
+    isMenuOpen: boolean;
+    setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Header({ setPageIndex, setSearchItem }: HeaderProps) {
+function Header({ setPageIndex, setSearchItem, isMenuOpen, setIsMenuOpen }: HeaderProps) {
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchItem(event.target.value);
