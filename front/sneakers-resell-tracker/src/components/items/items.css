@@ -46,3 +46,30 @@
     color: black;
     /* text-align: center; */
 }
+
+@media (max-width: 1200px) {
+    .menu-open {
+        padding-top: 290px;
+    }
+}
+
+@media (max-width: 966px) {
+    .menu-open {
+        padding-top: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-open {
+        padding-top: 350px;
+    }
+
+    .item-container {
+        flex-direction: column;
+    }
+
+    .item-info-container {
+        width: 75%;
+    }
+
+}
