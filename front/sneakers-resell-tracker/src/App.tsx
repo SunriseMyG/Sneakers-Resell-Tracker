@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Home from './components/home/home';
@@ -10,24 +11,29 @@ function App() {
   const [pageindex, setPageIndex] = React.useState(0);
   const [scu, setScu] = React.useState('');
   const [searchItem, setSearchItem] = React.useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="App">
       <Header
         setPageIndex={setPageIndex}
         setSearchItem={setSearchItem}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
       />
       {pageindex === 0 && (
         <Home
           setPageIndex={setPageIndex}
           setScu={setScu}
           searchItem={searchItem}
+          isMenuOpen={isMenuOpen}
         />
       )}
       {pageindex === 1 && (
         <Items
           setPageIndex={setPageIndex}
           scu={scu}
+          isMenuOpen={isMenuOpen}
         />
       )}
       
