@@ -6,6 +6,7 @@ interface HomeProps {
   setPageIndex: React.Dispatch<React.SetStateAction<number>>;
   setScu: React.Dispatch<React.SetStateAction<string>>;
   searchItem: string;
+  isMenuOpen: boolean;
 }
 
 let sneakers = [
@@ -119,7 +120,7 @@ let sneakers = [
   },
 ];
 
-function Home({ setPageIndex, setScu, searchItem }: HomeProps) {
+function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
 
   const handleScu = (scu: string) => {
     setScu(scu);
@@ -136,7 +137,7 @@ function Home({ setPageIndex, setScu, searchItem }: HomeProps) {
       <div className="last-release-container">
 
       </div>
-      <div className="sneaker-list-container">
+      <div className={`sneaker-list-container ${isMenuOpen ? "menu-open" : ""}`}>
         {filteredSneakers.map((sneaker) => (
           <div key={sneaker.id} className="sneaker-card">
             <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.codeSku) }}>
