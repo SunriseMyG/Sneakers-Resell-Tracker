@@ -6,6 +6,7 @@ import Travis from './../../images/sneakers.png'
 interface ItemProps {
     setPageIndex: React.Dispatch<React.SetStateAction<number>>;
     scu: string;
+    isMenuOpen: boolean;
 }
 
 let sneakers = [
@@ -22,12 +23,12 @@ let sneakers = [
     }
 ];
 
-function Items({ setPageIndex, scu }: ItemProps) {
+function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
     
     console.log(scu);
 
     return (
-        <div className="item-container">
+        <div className={`item-container ${isMenuOpen ? "menu-open" : ""}`}>
             <div className="item-info-container">
                 {sneakers.map((sneaker, index) => (
                     <div className="item-info" key={index}>
