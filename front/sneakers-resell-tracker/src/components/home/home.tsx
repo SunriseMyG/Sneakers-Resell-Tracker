@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./home.css";
-import Travis from './../../images/sneakers.png'
 
 interface HomeProps {
   setPageIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -9,145 +8,64 @@ interface HomeProps {
   isMenuOpen: boolean;
 }
 
-let sneakers = [
-  {
-    id: 1,
-    name: "Caca",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-1111",
-    color: "Brown",
-  },
-  {
-    id: 2,
-    name: "Caneton",
-    price: 1100,
-    size: 9,
-    img: Travis,
-    state: "Low Damaged",
-    releaseDate: "2021-05-29",
-    sold: true,
-    codeSku: "SKU-2222",
-    color: "Brown",
-  },
-  {
-    id: 3,
-    name: "Sunrise",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: true,
-    codeSku: "SKU-3333",
-    color: "Brown",
-  },
-  {
-    id: 4,
-    name: "Jordan 1 Retro High Travis Scott",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-4444",
-    color: "Brown",
-  },
-  {
-    id: 5,
-    name: "Jordan 1 Retro High Travis Scott",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-5555",
-    color: "Brown",
-  },
-  {
-    id: 6,
-    name: "Jordan 1 Retro High Travis Scott",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-6666",
-    color: "Brown",
-  },
-  {
-    id: 7,
-    name: "Jordan 1 Retro High Travis Scott",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-7777",
-    color: "Brown",
-  },
-  {
-    id: 8,
-    name: "Jordan 1 Retro High Travis Scott",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-8888",
-    color: "Brown",
-  },
-  {
-    id: 9,
-    name: "Jordan 1 Retro High Travis Scott",
-    price: 1500,
-    size: 9,
-    img: Travis,
-    state: "New",
-    releaseDate: "2021-05-29",
-    sold: false,
-    codeSku: "SKU-9999",
-    color: "Brown",
-  },
-];
+interface Sneaker {
+  name: string;
+  sku: string;
+  color: string;
+  price: number;
+  image: string; // Ajout de l'URL de l'image
+}
 
 function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
 
+  const [sneakerData, setSneakerData] = useState<Sneaker[]>([]);
+
   const handleScu = (scu: string) => {
     setScu(scu);
-    // console.log(scu);
     setPageIndex(1);
   };
 
-  const filteredSneakers = sneakers.filter((sneaker) =>
-    sneaker.name.toLowerCase().includes(searchItem.toLowerCase())
+  useEffect(() => {
+    const fetchSneaker = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/all`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setSneakerData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+
+    fetchSneaker();
+  }, []);
+
+  const filteredSneakers = sneakerData.filter((sneaker) =>
+    searchItem ? sneaker.name.toLowerCase().includes(searchItem.toLowerCase()) : true
   );
 
   return (
     <div className="home-container">
       <div className="last-release-container">
-
+        {/* Afficher les détails de la dernière sortie ici */}
       </div>
       <div className={`sneaker-list-container ${isMenuOpen ? "menu-open" : ""}`}>
         {filteredSneakers.map((sneaker) => (
-          <div key={sneaker.id} className="sneaker-card">
-            <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.codeSku) }}>
-              <img src={sneaker.img} alt="sneaker" />
+          <div key={sneaker.sku} className="sneaker-card">
+            <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.sku) }}>
+              <img src={sneaker.image} alt={sneaker.name} />
               <h2>{sneaker.name}</h2>
               <p>Price: {sneaker.price}$</p>
-              <p>Size: {sneaker.size}</p>
-              <p>Release Date: {sneaker.releaseDate}</p>
-              <p>Sold: {sneaker.sold ? "Yes" : "No"}</p>
               <p>Color: {sneaker.color}</p>
+              <p>SKU: {sneaker.sku}</p>
             </div>
           </div>
         ))}
