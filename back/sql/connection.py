@@ -7,13 +7,12 @@ def getDataBaseConnection():
         'user': 'root',
         'password': '',
         'host': '127.0.0.1',
+        'database': 'sneakers_resell_tracker',
         'connection_timeout': 300,
         'autocommit': True
     }
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-
-    cursor.execute("USE sneakers_resell_tracker")
 
     try:
         yield cnx, cursor

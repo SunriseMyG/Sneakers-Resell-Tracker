@@ -27,23 +27,27 @@ app.include_router(skuRouter)
 
 setupDatabase()
 
+def monitor_snkrs_thread():
+    with getDataBaseConnection() as (cnx, cursor):
+        try:
+            monitor_snkrs(cnx, cursor)
+        except Exception as e:
+            print(f"Error in monitor_snkrs_thread: {e}")
+
+def monitor_shopify_thread(url):
+    with getDataBaseConnection() as (cnx, cursor):
+        try:
+            monitor_shopify(url, cnx, cursor)
+        except Exception as e:
+            print(f"Error in monitor_shopify_thread: {e}")
+
 def start_monitoring():
     if not os.path.exists('data'):
         os.makedirs('data')
 
-    # with getDataBaseConnection() as (cnx, cursor):
-    #     snkrs_thread = threading.Thread(target=monitor_snkrs, args=(cnx, cursor), daemon=True)
-    #     snkrs_thread.start()
-
-    #     corteiz_thread = threading.Thread(target=monitor_shopify, args=('https://www.crtz.xyz/products.json', cnx, cursor), daemon=True)
-    #     corteiz_thread.start()
-
-    #     nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json', cnx, cursor), daemon=True)
-    #     nocta_thread.start()
-
-    #     snkrs_thread.join()
-    #     corteiz_thread.join()
-    #     nocta_thread.join()
+    threading.Thread(target=monitor_snkrs_thread, daemon=True).start()
+    threading.Thread(target=monitor_shopify_thread, args=('https://www.crtz.xyz/products.json',), daemon=True).start()
+    threading.Thread(target=monitor_shopify_thread, args=('https://www.nocta.com/products.json',), daemon=True).start()
 
 @app.on_event("startup")
 def startup_event():
