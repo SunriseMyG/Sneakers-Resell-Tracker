@@ -7,7 +7,8 @@ from routes.corteiz import router as corteizRouter
 from routes.nike import router as nikeRouter
 from routes.adidas import router as adidasRouter
 from routes.nocta import router as noctaRouter
-from routes.sku import router as skuRouter 
+from routes.sku import router as skuRouter
+from routes.all import router as allRouter
 from monitors.snkrs import monitor_snkrs
 from monitors.shopify import monitor_shopify
 import threading
@@ -24,6 +25,7 @@ app.include_router(adidasRouter)
 app.include_router(noctaRouter)
 
 app.include_router(skuRouter)
+app.include_router(allRouter)
 
 setupDatabase()
 
