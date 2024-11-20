@@ -1,5 +1,6 @@
 import React from "react";
 import "./items.css";
+import { useEffect } from "react";
 
 import Travis from './../../images/sneakers.png'
 
@@ -26,6 +27,28 @@ let sneakers = [
 function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
     
     console.log(scu);
+
+    useEffect(() => {
+        const fetchSneaker = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/sku/${scu}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                console.log(data);
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        };
+
+        fetchSneaker();
+    }, [scu]);
 
     return (
         <div className={`item-container ${isMenuOpen ? "menu-open" : ""}`}>
