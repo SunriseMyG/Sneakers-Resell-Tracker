@@ -13,4 +13,4 @@ async def read_sku(sku: str):
         if not result:
             raise HTTPException(status_code=404, detail="SKU {sku} not found")            
 
-        return result
+        return result[0]
