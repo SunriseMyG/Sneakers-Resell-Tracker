@@ -105,17 +105,17 @@ def monitor_snkrs(cnx, cursor):
                             desc = "Unknown"
 
                         try:
-                            content_list = obj['publishedContent']['nodes'][0]['properties']['jsonBody']['content'][0]['content']
-                            for content in content_list:
-                                text = content.get('text', 'Unknown')
-                                if "SKU : " in text:
-                                    sku = text.replace("SKU : ", "").strip()
-                                    break
-                            else:
-                                sku = "Unknown"
+                            sku = obj['productInfo'][0]['merchProduct']['styleColor']
                         except (IndexError, KeyError) as e:
                             print(f"Error retrieving SKU: {e}")
                             sku = "Unknown"
+
+                        if desc == "Unknown":
+                            try:
+                                desc = obj['productContent']['description']
+                            except (IndexError, KeyError) as e:
+                                print(f"Error retrieving description: {e}")
+                                desc = "Unknown"
                 
                         logs.append(product_id)
                         with open(logs_file, 'w') as file:
