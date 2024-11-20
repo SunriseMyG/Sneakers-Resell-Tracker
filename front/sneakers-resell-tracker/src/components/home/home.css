@@ -1,14 +1,9 @@
-
-
-
 .home-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
     height: 100vh;
     padding-top: 3px;
-    /* background-color: #fff; */
 }
 
 .sneaker-list-container {
@@ -22,25 +17,40 @@
 }
 
 .sneaker-card {
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ajustement de la hauteur pour être flexible */
+    border: 1px solid #ddd;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
 }
 
 .sneaker-card-info {
-    line-height: 10px;
+    text-align: center;
+    width: 100%;
 }
 
 .sneaker-card-info img {
     width: 100%;
-    height: 100%;
+    height: auto; /* Ajustement de la hauteur pour être flexible */
+    max-height: 200px; /* Hauteur maximale pour les images */
+    object-fit: contain; /* Pour s'assurer que les images ne sont pas coupées */
+    border-radius: 8px;
 }
 
 .sneaker-card-info h2 {
     font-family: 'sneakers';
     line-height: 30px;
+    margin: 10px 0;
 }
 
 .sneaker-card-info p {
     font-size: 16px;
+    margin: 5px 0;
 }
 
 @media (max-width: 1200px) {
@@ -55,22 +65,19 @@
 
 @media (max-width: 966px) {
     .sneaker-list-container {
-        /* padding-top: 200px; */
-        /* grid-template-columns: 1fr; */
+        grid-template-columns: 1fr;
     }
 
     .menu-open {
         padding-top: 350px;
     }
-
 }
-
 
 @media (max-width: 768px) {
     .sneaker-list-container {
         grid-template-columns: 1fr;
     }
-    
+
     .menu-open {
         padding-top: 350px;
     }
