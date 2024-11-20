@@ -1,21 +1,19 @@
 from fastapi import FastAPI
+from sql.connection import getDataBaseConnection
 from sql.setup import setupDatabase
-from sql.connection import connectDatabase, disconnectDatabase
 from middlewares.middleware import setupMiddlewares
 from routes.default import router as defaultRouter
 from routes.corteiz import router as corteizRouter
 from routes.nike import router as nikeRouter
 from routes.adidas import router as adidasRouter
 from routes.nocta import router as noctaRouter
+from routes.sku import router as skuRouter 
 from monitors.snkrs import monitor_snkrs
 from monitors.shopify import monitor_shopify
 import threading
 import os
 
 app = FastAPI()
-
-cnx, cursor = connectDatabase()
-setupDatabase(cnx, cursor)
 
 setupMiddlewares(app)
 
@@ -25,22 +23,27 @@ app.include_router(nikeRouter)
 app.include_router(adidasRouter)
 app.include_router(noctaRouter)
 
+app.include_router(skuRouter)
+
+setupDatabase()
+
 def start_monitoring():
     if not os.path.exists('data'):
         os.makedirs('data')
 
-    snkrs_thread = threading.Thread(target=monitor_snkrs, args=(cnx, cursor), daemon=True)
-    snkrs_thread.start()
-    
-    corteiz_thread = threading.Thread(target=monitor_shopify, args=('https://www.crtz.xyz/products.json', cnx, cursor), daemon=True)
-    corteiz_thread.start()
+    # with getDataBaseConnection() as (cnx, cursor):
+    #     snkrs_thread = threading.Thread(target=monitor_snkrs, args=(cnx, cursor), daemon=True)
+    #     snkrs_thread.start()
 
-    nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json', cnx, cursor), daemon=True)
-    nocta_thread.start()
+    #     corteiz_thread = threading.Thread(target=monitor_shopify, args=('https://www.crtz.xyz/products.json', cnx, cursor), daemon=True)
+    #     corteiz_thread.start()
 
-    snkrs_thread.join()
-    corteiz_thread.join()
-    nocta_thread.join()
+    #     nocta_thread = threading.Thread(target=monitor_shopify, args=('https://www.nocta.com/products.json', cnx, cursor), daemon=True)
+    #     nocta_thread.start()
+
+    #     snkrs_thread.join()
+    #     corteiz_thread.join()
+    #     nocta_thread.join()
 
 @app.on_event("startup")
 def startup_event():

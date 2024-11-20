@@ -1,26 +1,22 @@
+from contextlib import contextmanager
 import mysql.connector
-from time import sleep
 
-def connectDatabase():
+@contextmanager
+def getDataBaseConnection():
     config = {
         'user': 'root',
         'password': '',
         'host': '127.0.0.1',
-        'connection_timeout':300,
-        'autocommit':True
+        'connection_timeout': 300,
+        'autocommit': True
     }
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+
+    cursor.execute("USE sneakers_resell_tracker")
 
     try:
-        cnx = mysql.connector.connect(**config)
-        cursor = cnx.cursor()
-        print("Connected to MySQL server.")
-        sleep(2)
-        return cnx, cursor
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        exit(1)
-
-def disconnectDatabase(cnx, cursor):
-    cursor.close()
-    cnx.close()
-    print("MySQL connection closed.")
+        yield cnx, cursor
+    finally:
+        cursor.close()
+        cnx.close()

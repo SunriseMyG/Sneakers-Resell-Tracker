@@ -3,7 +3,18 @@ from mysql.connector import errorcode
 
 DB_NAME = 'sneakers_resell_tracker'
 
-def setupDatabase(cnx, cursor):
+def setupDatabase():
+    config = {
+        'user': 'root',
+        'password': '',
+        'host': '127.0.0.1',
+        'connection_timeout': 300,
+        'autocommit': True
+    }
+
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+
     try:
         cursor.execute(f"CREATE DATABASE {DB_NAME} DEFAULT CHARACTER SET 'utf8'")
         print(f"Database {DB_NAME} created successfully.")
