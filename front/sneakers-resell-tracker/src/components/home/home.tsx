@@ -37,9 +37,15 @@ function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setSneakerData(data);
-        console.log(data);
+        const data: Sneaker[] = await response.json();
+
+        // Retirer les doublons basés sur le champ 'name'
+        const uniqueSneakers = data.filter((sneaker: Sneaker, index: number, self: Sneaker[]) =>
+          index === self.findIndex((s: Sneaker) => s.name === sneaker.name)
+        );
+
+        setSneakerData(uniqueSneakers);
+        console.log(uniqueSneakers);
       } catch (error) {
         console.error("Fetch error:", error);
       }
@@ -48,7 +54,7 @@ function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
     fetchSneaker();
   }, []);
 
-  const filteredSneakers = sneakerData.filter((sneaker) =>
+  const filteredSneakers = sneakerData.filter((sneaker: Sneaker) =>
     searchItem ? sneaker.name.toLowerCase().includes(searchItem.toLowerCase()) : true
   );
 
@@ -58,7 +64,7 @@ function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
         {/* Afficher les détails de la dernière sortie ici */}
       </div>
       <div className={`sneaker-list-container ${isMenuOpen ? "menu-open" : ""}`}>
-        {filteredSneakers.map((sneaker) => (
+        {filteredSneakers.map((sneaker: Sneaker) => (
           <div key={sneaker.sku} className="sneaker-card">
             <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.sku) }}>
               <img src={sneaker.image} alt={sneaker.name} />
