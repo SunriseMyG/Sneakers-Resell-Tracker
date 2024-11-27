@@ -23,7 +23,7 @@
     justify-content: center;
     height: 100%; /* Ajustement de la hauteur pour être flexible */
     border: 1px solid #ddd;
-    padding: 1rem;
+    padding: 0.3rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #fff;
