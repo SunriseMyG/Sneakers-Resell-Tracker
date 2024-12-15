@@ -18,9 +18,10 @@ async def search_stockx(string: str):
     response = requests.get(url, headers=headers, params=querystring)
 
     data = response.json()
-
-    if data['hits'][0] == None:
-        raise HTTPException(status_code=404, detail="Item not found")
+    if data['hits'] is None or len(data['hits']) == 0:
+        return {"error": "No hits found"}
+    if data['hits'][0] is None:
+        return {"error": "First hit is None"}
 
     first = data['hits'][0]
     avg_price = first['avg_price']
