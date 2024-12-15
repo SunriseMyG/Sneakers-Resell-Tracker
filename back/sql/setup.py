@@ -41,6 +41,7 @@ def setupDatabase():
         "  `description` blob NOT NULL,"
         "  `sku` varchar(255) NOT NULL,"
         "  `color` varchar(255) NOT NULL,"
+        "  `retailer` varchar(255) NOT NULL,"
         "  PRIMARY KEY (`id`)"
         ") ENGINE=InnoDB"
     )

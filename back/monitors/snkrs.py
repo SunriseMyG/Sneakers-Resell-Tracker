@@ -123,7 +123,7 @@ def monitor_snkrs(cnx, cursor):
                 
                         #print(f"New product found: {full_title} - {color_description} - {price} - {product_url} - {img} - {desc} - {sku}")
                         if (cnx and cursor):
-                            insertItem(cnx, cursor, full_title, price, product_url, img, desc, sku, color_description)
+                            insertItem(cnx, cursor, full_title, price, product_url, img, desc, sku, color_description, 'Nike')
 
                         sleep(2500)
 

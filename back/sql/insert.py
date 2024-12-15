@@ -1,7 +1,7 @@
 import mysql.connector
 import time
 
-def insertItem(cnx, cursor, name, price, url, image, description, sku, color):
+def insertItem(cnx, cursor, name, price, url, image, description, sku, color, retailer):
     if not image:
         print("Image is required.")
         return
@@ -18,10 +18,14 @@ def insertItem(cnx, cursor, name, price, url, image, description, sku, color):
         print("Color is required.")
         return
 
+    if not retailer:
+        print("Retailer is required.")
+        return
+
     query = ("INSERT INTO items "
-             "(name, price, url, image, description, sku, color) "
-             "VALUES (%s, %s, %s, %s, %s, %s, %s)")
-    data = (name, price, url, image, description, sku, color)
+             "(name, price, url, image, description, sku, color, retailer) "
+             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+    data = (name, price, url, image, description, sku, color, retailer)
 
     max_retries = 3
     for attempt in range(max_retries):

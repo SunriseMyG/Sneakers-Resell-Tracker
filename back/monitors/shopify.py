@@ -68,8 +68,9 @@ def monitor_shopify(url, cnx, cursor):
                 description = item['description']
                 sku = item['variants'][0]['sku'] 
                 color = "N/A"
+                retailer = url.split('https://')[1].split('.')[1]
 
-                insertItem(cnx, cursor, title, price, url, image, description, sku, color)
+                insertItem(cnx, cursor, title, price, url, image, description, sku, color, retailer)
 
             sleep(1000)
 
