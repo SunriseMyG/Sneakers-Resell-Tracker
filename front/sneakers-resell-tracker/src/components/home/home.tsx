@@ -70,7 +70,7 @@ function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
               <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.sku) }}>
                 <img src={sneaker.image} alt={sneaker.name} />
                 <h2>{sneaker.name}</h2>
-                <p>Price: {sneaker.price}$</p>
+                <p>Price: {sneaker.price}€</p>
                 <p>Color: {sneaker.color}</p>
                 <p>SKU: {sneaker.sku}</p>
               </div>
