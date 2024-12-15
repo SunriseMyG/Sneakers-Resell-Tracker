@@ -27,6 +27,7 @@ async def search_stockx(string: str):
     avg_price = first['avg_price']
     link = first['link']
     release_date = first['release_date']
+    brand = first['brand']
 
-    return { "avg_price": avg_price, "link": link, "release_date": release_date }
+    return { "avg_price": avg_price, "link": link, "release_date": release_date, "brand": brand }
 
