@@ -65,15 +65,17 @@ function Home({ setPageIndex, setScu, searchItem, isMenuOpen }: HomeProps) {
       </div>
       <div className={`sneaker-list-container ${isMenuOpen ? "menu-open" : ""}`}>
         {filteredSneakers.map((sneaker: Sneaker) => (
-          <div key={sneaker.sku} className="sneaker-card">
-            <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.sku) }}>
-              <img src={sneaker.image} alt={sneaker.name} />
-              <h2>{sneaker.name}</h2>
-              <p>Price: {sneaker.price}$</p>
-              <p>Color: {sneaker.color}</p>
-              <p>SKU: {sneaker.sku}</p>
+          sneaker.image !== "Unknown" && sneaker.name && sneaker.price && sneaker.sku ? (
+            <div key={sneaker.sku} className="sneaker-card">
+              <div className="sneaker-card-info" onClick={() => { handleScu(sneaker.sku) }}>
+                <img src={sneaker.image} alt={sneaker.name} />
+                <h2>{sneaker.name}</h2>
+                <p>Price: {sneaker.price}$</p>
+                <p>Color: {sneaker.color}</p>
+                <p>SKU: {sneaker.sku}</p>
+              </div>
             </div>
-          </div>
+          ) : null
         ))}
       </div>
     </div>
