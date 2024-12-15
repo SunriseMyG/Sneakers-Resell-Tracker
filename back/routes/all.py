@@ -7,10 +7,10 @@ router = APIRouter()
 async def read_all(sku: str = Query(None)):
     with getDataBaseConnection() as (cnx, cursor):
         if sku:
-            query = "SELECT id, name, sku, color, price, image FROM items WHERE sku = %s"
+            query = "SELECT id, name, sku, color, price, image, retailer FROM items WHERE sku = %s"
             cursor.execute(query, (sku,))
         else:
-            query = "SELECT id, name, sku, color, price, image FROM items"
+            query = "SELECT id, name, sku, color, price, image, retailer FROM items"
             cursor.execute(query)
         
         result = cursor.fetchall()
@@ -26,7 +26,8 @@ async def read_all(sku: str = Query(None)):
                 "sku": row[2],
                 "color": row[3],
                 "price": row[4],
-                "image": row[5]
+                "image": row[5],
+                "retailer": row[6]
             }
             items.append(item)
 

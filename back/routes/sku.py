@@ -6,7 +6,7 @@ router = APIRouter()
 @router.get("/api/sku/{sku}")
 async def read_sku(sku: str):
     with getDataBaseConnection() as (cnx, cursor):
-        query = "SELECT id, name, sku, color, price, image FROM items WHERE sku = %s"
+        query = "SELECT id, name, sku, color, price, image, retailer FROM items WHERE sku = %s"
         cursor.execute(query, (sku,))
         result = cursor.fetchall()
 
@@ -19,7 +19,8 @@ async def read_sku(sku: str):
             "sku": result[0][2],
             "color": result[0][3],
             "price": result[0][4],
-            "image": result[0][5]
+            "image": result[0][5],
+            "retailer": result[0][6]
         }
 
         return item
