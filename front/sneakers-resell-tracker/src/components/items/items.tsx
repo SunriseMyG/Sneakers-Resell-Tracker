@@ -142,7 +142,7 @@ function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
                                     </div>
                                     <div>
                                         <p style={{ color: "#1F1F1F"}}>Modèle</p>
-                                        <p style={{ color: "424242" }}>{sneaker.retailer}</p>
+                                        <p style={{ color: "424242" }}>{sneaker.brand}</p>
                                     </div>
                                     <div>
                                         <p style={{ color: "#1F1F1F"}}>Couleurs</p>
@@ -158,7 +158,7 @@ function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
                 <h1>Shops</h1>
                 <div className="shop-title">
                     <RiShoppingBag4Fill className="icon"/>
-                    <h2>Disponible</h2>
+                    <h2>Disponible (Prix Approximatif)</h2>
                 </div>
                 <div className="item-info-resell">
                     <button className="resell-button" onClick={() => window.open(sneaker?.stockxURL, "_blank")}>
