@@ -16,6 +16,10 @@ interface Sneaker {
     color: string;
     price: number;
     image: string;
+    retailer: string;
+    resellPrice?: number;
+    stockxURL?: string;
+    brand?: string;
     size?: number; // Optionnel car il n'est pas présent dans la réponse
     releaseDate?: string; // Optionnel car il n'est pas présent dans la réponse
 }
@@ -38,6 +42,53 @@ function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
                 const data: Sneaker = await response.json();
                 setSneaker(data);
                 console.log(data);
+
+                try {
+                    let response = await fetch(`http://localhost:8000/api/stockx/search/${data.sku}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                
+                    let dataSTOCKX = await response.json();
+                    console.log(dataSTOCKX);
+                
+                    if (dataSTOCKX.error === "No hits found") {
+                        response = await fetch(`http://localhost:8000/api/stockx/search/${data.name}`, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        });
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                
+                        dataSTOCKX = await response.json();
+                        console.log(dataSTOCKX);
+                    }
+
+                    if (dataSTOCKX.error === "No hits found") {
+                        data.releaseDate = "N/A";
+                        data.resellPrice = 0;
+                        data.brand = "N/A";
+                        data.stockxURL = "N/A";
+                    }
+                
+                    data.releaseDate = dataSTOCKX.release_date;
+                    data.resellPrice = Number(parseFloat(dataSTOCKX.avg_price).toFixed(2));
+                    data.brand = dataSTOCKX.brand;
+                    data.stockxURL = dataSTOCKX.link;
+
+                    setSneaker(data);
+                
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                }
             } catch (error) {
                 console.error("Fetch error:", error);
             }
@@ -83,7 +134,7 @@ function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
                                     </div>
                                     <div>
                                         <p style={{ color: "#1F1F1F"}}>Marque</p>
-                                        <p style={{ color: "424242" }}>{sneaker.releaseDate}</p>
+                                        <p style={{ color: "424242" }}>{sneaker.retailer}</p>
                                     </div>
                                     <div>
                                         <p style={{ color: "#1F1F1F"}}>Code SKU</p>
@@ -91,7 +142,7 @@ function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
                                     </div>
                                     <div>
                                         <p style={{ color: "#1F1F1F"}}>Modèle</p>
-                                        <p style={{ color: "424242" }}>{sneaker.releaseDate}</p>
+                                        <p style={{ color: "424242" }}>{sneaker.retailer}</p>
                                     </div>
                                     <div>
                                         <p style={{ color: "#1F1F1F"}}>Couleurs</p>
@@ -110,9 +161,9 @@ function Items({ setPageIndex, scu, isMenuOpen }: ItemProps) {
                     <h2>Disponible</h2>
                 </div>
                 <div className="item-info-resell">
-                    <div className="item-info-resell-title">WeTheNew: 1500$</div>
-                    <div className="item-info-resell-title">StockX: 1200$</div>
-                    <div className="item-info-resell-title">SecondSteps: 1400$</div>
+                    <button className="resell-button" onClick={() => window.open(sneaker?.stockxURL, "_blank")}>
+                        StockX: {sneaker?.resellPrice}€
+                    </button>
                 </div>
             </div>
         </div>
