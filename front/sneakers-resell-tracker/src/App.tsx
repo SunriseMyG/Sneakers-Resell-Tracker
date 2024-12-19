@@ -12,6 +12,7 @@ function App() {
   const [scu, setScu] = React.useState('');
   const [searchItem, setSearchItem] = React.useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [retailer, setRetailer] = React.useState('');
 
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
         setSearchItem={setSearchItem}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        setRetailer={setRetailer}
       />
       {pageindex === 0 && (
         <Home
@@ -27,6 +29,7 @@ function App() {
           setScu={setScu}
           searchItem={searchItem}
           isMenuOpen={isMenuOpen}
+          retailer={retailer}
         />
       )}
       {pageindex === 1 && (

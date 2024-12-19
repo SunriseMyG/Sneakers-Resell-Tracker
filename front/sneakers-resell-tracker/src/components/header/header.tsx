@@ -8,9 +8,10 @@ interface HeaderProps {
     setSearchItem: React.Dispatch<React.SetStateAction<string>>;
     isMenuOpen: boolean;
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setRetailer: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function Header({ setPageIndex, setSearchItem, isMenuOpen, setIsMenuOpen }: HeaderProps) {
+function Header({ setPageIndex, setSearchItem, isMenuOpen, setIsMenuOpen, setRetailer }: HeaderProps) {
 
     // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -22,9 +23,14 @@ function Header({ setPageIndex, setSearchItem, isMenuOpen, setIsMenuOpen }: Head
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleBrand = (brand: string) => {
+        setRetailer(brand);
+    }
+
+    
     return (
         <div className="header-container">
-            <div className="header-logo" onClick={() => setPageIndex(0)}>
+            <div className="header-logo" onClick={() => { handleBrand(''); setPageIndex(0); }}>
                 Resell Tracker
             </div>
             <div className={`header-brand ${isMenuOpen ? "active" : ""}`}>
@@ -33,11 +39,11 @@ function Header({ setPageIndex, setSearchItem, isMenuOpen, setIsMenuOpen }: Head
                         <input type="text" placeholder="Search" onChange={handleSearchChange} />
                     </div>
                 )}
-                <button>Nike</button>
-                <button>Adidas</button>
-                <button>Jordan</button>
-                <button>Yeezy</button>
-                <button>Supreme</button>
+                <button onClick={() => handleBrand("Nike")}>Nike</button>
+                <button onClick={() => handleBrand("crtz")}>Corteiz</button>
+                <button onClick={() => handleBrand("nocta")}>Nocta</button>
+                {/* <button>Yeezy</button>
+                <button>Supreme</button> */}
             </div>
             <div className="hamburger-menu" onClick={toggleMenu}>
                 <div></div>
